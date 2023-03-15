@@ -15,6 +15,7 @@ app.use(express.urlencoded({ extended: false }));
 const mainRouter = require('./routes/index');
 const userRouter = require('./routes/users');
 const boardRouter = require('./routes/board');
+const dbRouter = require('./routes/db');
 
 app.use((err, req, res, next) => {
   console.log(err.stack);
@@ -25,6 +26,7 @@ app.use((err, req, res, next) => {
 app.use('/', mainRouter);
 app.use('/users', userRouter);
 app.use('/board', boardRouter);
+app.use('/db', dbRouter);
 
 app.get('/', (req, res) => {
   res.send('express 실습');

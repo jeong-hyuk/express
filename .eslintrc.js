@@ -5,9 +5,9 @@ module.exports = {
     'no-console': 'off',
   },
   env: {
-    browser: true,
-    es2023: true,
-    es6: true,
+    // browser: true,
+    // es2023: true,
+    // es6: true,
     // node: true,
     // amd: true,
   },
