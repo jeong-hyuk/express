@@ -1,6 +1,7 @@
 // 페키지 불러오는 파트
 const express = require('express');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 
 // 서버 중요정보 파트
 const app = express();
@@ -11,12 +12,14 @@ app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
 
 const mainRouter = require('./routes/index');
 const userRouter = require('./routes/users');
 const boardRouter = require('./routes/board');
 const dbRouter = require('./routes/db');
 const dbBoardRouter = require('./routes/dbBoard');
+const cookieRouter = require('./routes/cookie');
 
 app.use((err, req, res, next) => {
   console.log(err.stack);
@@ -29,6 +32,7 @@ app.use('/users', userRouter);
 app.use('/board', boardRouter);
 app.use('/db', dbRouter);
 app.use('/dbBoard', dbBoardRouter);
+app.use('/cookie', cookieRouter);
 
 app.get('/', (req, res) => {
   res.send('express 실습');

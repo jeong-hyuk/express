@@ -7,14 +7,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>메인 페이지</title>
   <!-- localhost:4000/public/ -->
-  <link rel="stylesheet" href="/css/style.css">
-  <script src="/js/main.js"></script>
 </head>
 
 <body>
-  <h1>메인 페이지 입니다</h1>
-  <p><%= msg %></p>
-  <img src="/images/jejusky.jpg" alt="제주 하늘">
+  <h1>Welcome to Tetz Express Service</h1>
+  <h2><a href="/users">회원 서비스</a></h2>
+  <h2><a href="/dbBoard">게시판 서비스</a></h2>
+  <script>
+    // console.log(document.cookie);
+    // document.cookie = "user=jack; expires=17 Mar 2023 13:00:00 GMT; path=/";
+    // document.cookie = "test=aaa; expires=17 Mar 2023 13:00:00 GMT; path=/";
+
+    console.log(document.cookie);
+  </script>
 </body>
 
 </html>
