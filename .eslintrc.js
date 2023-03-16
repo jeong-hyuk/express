@@ -6,7 +6,7 @@ module.exports = {
   },
   env: {
     // browser: true,
-    // es2023: true,
+    es2023: true,
     // es6: true,
     // node: true,
     // amd: true,
