@@ -2,6 +2,7 @@
 const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const session = require('express-session');
 
 // 서버 중요정보 파트
 const app = express();
@@ -13,6 +14,16 @@ app.use(express.static('public'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(
+  session({
+    secret: 'jack',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      maxAge: 1000 * 60 * 60,
+    },
+  }),
+);
 
 const mainRouter = require('./routes/index');
 const userRouter = require('./routes/users');
@@ -20,6 +31,8 @@ const boardRouter = require('./routes/board');
 const dbRouter = require('./routes/db');
 const dbBoardRouter = require('./routes/dbBoard');
 const cookieRouter = require('./routes/cookie');
+const registerRouter = require('./routes/register');
+const loginRouter = require('./routes/login');
 
 app.use((err, req, res, next) => {
   console.log(err.stack);
@@ -33,6 +46,8 @@ app.use('/board', boardRouter);
 app.use('/db', dbRouter);
 app.use('/dbBoard', dbBoardRouter);
 app.use('/cookie', cookieRouter);
+app.use('/register', registerRouter);
+app.use('/login', loginRouter);
 
 app.get('/', (req, res) => {
   res.send('express 실습');
