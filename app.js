@@ -22,6 +22,8 @@ app.use(
     saveUninitialized: true,
   }),
 );
+app.use(express.static('public'));
+app.use('/uploads', express.static('uploads'));
 
 const mainRouter = require('./routes/index');
 const userRouter = require('./routes/users');

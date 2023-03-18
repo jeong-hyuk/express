@@ -1,4 +1,5 @@
 const mongooseConnect = require('./mongooseConnect');
+mongooseConnect();
 const User = require('../models/user');
 
 const UNEXPECTED_MSG =
