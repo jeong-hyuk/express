@@ -32,8 +32,14 @@ router.get('/write', isLogin, (req, res) => {
 
 // 데이터 베이스에 글쓰기
 router.post('/write', isLogin, (req, res) => {
+  // USERID --> req.session.userId
   if (req.body.title && req.body.content) {
-    boardDB.writeArticle(req.body, (data) => {
+    const newArticle = {
+      userId: req.session.userId,
+      title: req.body.title,
+      content: req.body.content,
+    };
+    boardDB.writeArticle(newArticle, (data) => {
       console.log(data);
       if (data.affectedRows >= 1) {
         res.redirect('/dbBoard');
