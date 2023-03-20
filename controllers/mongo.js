@@ -18,7 +18,11 @@ client.connect((err) => {
       },
       (insertErr, insertResult) => {
         console.log(insertResult);
-        client.close();
+        // client.close();
+        const findCursor = test.find({});
+        findCursor.toArray((err, data) => {
+          console.log(data);
+        });
       },
     );
   });
