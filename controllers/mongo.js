@@ -109,28 +109,75 @@ const client = new MongoClient(uri, {
 //   });
 // });
 
-// find query
+// // find query
+// client.connect((err) => {
+//   const test = client.db('kdt5').collection('test');
+//   test.deleteMany({}, (deleteErr, deleteResult) => {
+//     if (deleteErr) throw deleteErr;
+//     console.log(deleteResult);
+
+//     test.insertMany(
+//       [
+//         { name: 'pororo', age: 5 },
+//         { name: 'loopy', age: 6 },
+//         { name: 'crong', age: 4 },
+//       ],
+//       (insertErr, insertResult) => {
+//         if (insertErr) throw insertErr;
+//         console.log(insertResult);
+
+//         const findCursor = test.find({ name: 'loopy' });
+//         console.log(findCursor);
+//         findCursor.toArray((toArrErr, toArrData) => {
+//           if (toArrErr) throw toArrErr;
+//           console.log(toArrData);
+//         });
+//         // client.close();
+//       },
+//     );
+//   });
+// });
+
 client.connect((err) => {
-  const test = client.db('kdt5').collection('test');
-  test.deleteMany({}, (deleteErr, deleteResult) => {
+  const member = client.db('kdt5').collection('member');
+  member.deleteMany({}, (deleteErr, deleteResult) => {
     if (deleteErr) throw deleteErr;
     console.log(deleteResult);
 
-    test.insertMany(
+    member.insertMany(
       [
-        { name: 'pororo', age: 5 },
-        { name: 'loopy', age: 6 },
-        { name: 'crong', age: 4 },
+        { name: '정혁', age: 26 },
+        { name: '유림', age: 27 },
+        { name: '찬호', age: 26 },
+        { name: '민정', age: 25 },
+        { name: '민선', age: 29 },
       ],
       (insertErr, insertResult) => {
         if (insertErr) throw insertErr;
-        console.log(insertResult);
-
-        test.findOne({ name: 'loopy' }, (findErr, findData) => {
-          if (findErr) throw findErr;
-          console.log(findData);
-        });
-        // client.close();
+        member.insertOne(
+          { name: '성희', age: 27 },
+          (insertOneErr, insertOneResult) => {
+            if (insertOneErr) throw insertOneErr;
+            member.deleteOne(
+              { name: '민선' },
+              (deleteOneErr, deleteOneResult) => {
+                if (deleteOneErr) throw deleteOneErr;
+                member.updateOne(
+                  { name: '찬호' },
+                  { $set: { name: '호준', age: 29 } },
+                  (updateErr, updateResult) => {
+                    if (updateErr) throw updateErr;
+                    const findCursor = member.find({ age: { $gte: 27 } });
+                    findCursor.toArray((toArrErr, toArrData) => {
+                      if (toArrErr) throw toArrErr;
+                      console.log(toArrData);
+                    });
+                  },
+                );
+              },
+            );
+          },
+        );
       },
     );
   });
