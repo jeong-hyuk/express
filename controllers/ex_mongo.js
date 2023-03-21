@@ -23,8 +23,8 @@ async function main() {
       { name: '김정혁' },
       { $set: { name: '신상아', age: 25 } },
     );
-    const oldCursor = member.find({ age: { $gte: 25 } });
-    const dataArr = await oldCursor.toArray();
+    const findCursor = member.find({ age: { $gte: 25 } });
+    const dataArr = await findCursor.toArray();
     console.log(dataArr);
   } catch (err) {
     console.log(err);
