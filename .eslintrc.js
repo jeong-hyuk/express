@@ -3,12 +3,18 @@ module.exports = {
   rules: {
     'linebreak-style': 0,
     'no-console': 'off',
+    'operator-linebreak': 'off',
+    'consistent-return': 'off',
+    'nonblock-statement-body-position': 'off',
+    'import/no-extraneous-dependencies': 'off',
+    curly: 'off',
+  },
+  parserOptions: {
+    ecmaVersion: 'latest',
   },
   env: {
+    es6: true,
     // browser: true,
     es2023: true,
-    // es6: true,
-    // node: true,
-    // amd: true,
   },
 };
