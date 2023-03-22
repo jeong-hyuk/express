@@ -6,9 +6,9 @@ const UNEXPECTED_MSG = '<br><a href="/">메인 페이지로 이동</a>';
 const getAllArticles = async (req, res) => {
   try {
     const client = await mongoClient.connect();
-    const borad = client.db('kdt5').collection('board');
+    const board = client.db('kdt5').collection('board');
 
-    const allArticleCursor = borad.find({}); // 전체 객체를 가져가겠다
+    const allArticleCursor = board.find({}); // 전체 객체를 가져가겠다
     const ARTICLE = await allArticleCursor.toArray();
 
     res.render('db_board', {
@@ -25,14 +25,14 @@ const getAllArticles = async (req, res) => {
 const writeArticle = async (req, res) => {
   try {
     const client = await mongoClient.connect();
-    const borad = client.db('kdt5').collection('board');
+    const board = client.db('kdt5').collection('board');
 
     const newArticle = {
       USERID: req.session.userId,
       TITLE: req.body.title,
       CONTENT: req.body.content,
     };
-    await borad.insertOne(newArticle);
+    await board.insertOne(newArticle);
     res.redirect('/dbBoard');
   } catch (err) {
     console.error(err);
@@ -42,17 +42,54 @@ const writeArticle = async (req, res) => {
 const getArticle = async (req, res) => {
   try {
     const client = await mongoClient.connect();
-    const borad = client.db('kdt5').collection('board');
+    const board = client.db('kdt5').collection('board');
 
-    const selectedArticle = await borad.findOne({
+    const selectedArticle = await board.findOne({
       _id: ObjectId(req.params.id),
     });
-  } catch (error) {
+    res.render('db_board_modify', { selectedArticle });
+  } catch (err) {
     console.error(err);
     res.status(500).send(err.message + UNEXPECTED_MSG);
   }
 };
-module.exports = { getAllArticles, writeArticle, getArticle };
+
+const modifyArticle = async (req, res) => {
+  try {
+    const client = await mongoClient.connect();
+    const board = client.db('kdt5').collection('board');
+
+    await board.updateOne(
+      { _id: ObjectId(req.params.id) },
+      { $set: { TITLE: req.body.title, CONTENT: req.body.content } },
+    );
+    res.status(200);
+    res.redirect('/dbBoard');
+  } catch (err) {
+    console.error(err);
+    res.status(500).send(err.message + UNEXPECTED_MSG);
+  }
+};
+
+const deleteArticle = async (req, res) => {
+  try {
+    const client = await mongoClient.connect();
+    const board = client.db('kdt5').collection('board');
+
+    await board.deleteOne({ _id: ObjectId(req.params.id) });
+    res.status(200).json('삭제 성공');
+  } catch (err) {
+    console.error(err);
+    res.status(500).send(err.message + UNEXPECTED_MSG);
+  }
+};
+module.exports = {
+  getAllArticles,
+  writeArticle,
+  getArticle,
+  modifyArticle,
+  deleteArticle,
+};
 
 // const boardDB = {
 //   // 모든 게시글 가져오기

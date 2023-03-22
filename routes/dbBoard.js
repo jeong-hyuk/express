@@ -2,6 +2,9 @@ const express = require('express');
 const {
   getAllArticles,
   writeArticle,
+  getArticle,
+  modifyArticle,
+  deleteArticle,
 } = require('../controllers/boardController');
 
 const router = express.Router();
@@ -26,6 +29,14 @@ router.get('/write', isLogin, (req, res) => {
 });
 // 글 쓰기
 router.post('/write', isLogin, writeArticle);
+
+// 글 수정 모드로 이동
+router.get('/modify/:id', isLogin, getArticle);
+
+// 글 수정하기
+router.post('/modify/:id', isLogin, modifyArticle);
+
+router.delete('/delete/:id', isLogin, deleteArticle);
 // // 게시판 페이지 호출
 // router.get('/', isLogin, (req, res) => {
 //   boardDB.getAllArticles((data) => {
