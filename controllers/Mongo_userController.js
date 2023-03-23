@@ -1,5 +1,4 @@
-const mongooseConnect = require('./mongooseConnect');
-const User = require('../models/user');
+const mongoClient = require('./mongoConnect');
 
 const UNEXPECTED_MSG =
   '알수 없는 문제 발생<br><a href="/register">회원 가입으로 이동</a>';
@@ -18,9 +17,12 @@ const LOGIN_WRONG_PASSWORD_MSG =
 // 회원가입
 const registerUser = async (req, res) => {
   try {
-    // const duplicatedUser = await User.findOne({ id: req.body.id });
-    // if (duplicatedUser) return res.status(400).send(DUPLICATED_MSG);
-    await User.create(req.body);
+    const client = await mongoClient.connect();
+    const user = client.db('kdt5').collection('user');
+
+    const duplicatedUser = await user.findOne({ id: req.body });
+    if (duplicatedUser) return res.status(400).send(DUPLICATED_MSG);
+    await user.insertOne(req.body);
     res.status(200).send(SUCCESS_MSG);
   } catch (err) {
     console.error(err);
@@ -30,8 +32,11 @@ const registerUser = async (req, res) => {
 
 const loginUser = async (req, res) => {
   try {
+    const client = await mongoClient.connect();
+    const user = client.db('kdt5').collection('user');
+
     // 아이디와 비번이 동일한게 있는것을 찾는 코드.
-    const logUser = await User.findOne({
+    const logUser = await user.findOne({
       id: req.body.id,
     });
     // 만약 아이디 비번이 동일한것이 없으면 에리 띄워줌.
@@ -56,7 +61,7 @@ const loginUser = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, loginUser, mongooseConnect };
+module.exports = { registerUser, loginUser };
 
 // 리펙토링 전 코드
 // const userDB = {

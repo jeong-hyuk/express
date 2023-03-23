@@ -165,7 +165,8 @@
       if (res.status !== 200) return alert('통신 실패');
 
       const msg = await res.json();
-      console.log(msg);
+      if (res.status === 200) location.reload();
+      //console.log(msg);
     }
 
     // function deleteArticle(id) {
